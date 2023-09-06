@@ -1,26 +1,31 @@
 package com.capacitorcommunity.CapacitorOcr
 
-import android.graphics.Bitmap
+
 import android.util.NoSuchPropertyException
 import com.getcapacitor.JSObject
 import com.getcapacitor.PluginCall
-import com.google.firebase.ml.vision.FirebaseVision
-import com.google.firebase.ml.vision.common.FirebaseVisionImage
-import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.mlkit.vision.common.InputImage;
+import com.google.mlkit.vision.text.Text;
+import com.google.mlkit.vision.text.TextRecognition;
+import com.google.mlkit.vision.text.TextRecognizer;
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
+
+
 import org.json.JSONArray
 
 
 class TextDetector {
-  fun detectText(call: PluginCall, bitmap: Bitmap) {
-    val image: FirebaseVisionImage
-    val detectedText = ArrayList<Any>()
+  fun detectText(call: PluginCall, image: InputImage) {
 
     try {
-      image = FirebaseVisionImage.fromBitmap(bitmap)
-      val width = bitmap.width
-      val height = bitmap.height
 
-      val textDetector: FirebaseVisionTextRecognizer = FirebaseVision.getInstance().getOnDeviceTextRecognizer();
+      val textDetector = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
 
       textDetector.processImage(image)
         .addOnSuccessListener { detectedBlocks ->
