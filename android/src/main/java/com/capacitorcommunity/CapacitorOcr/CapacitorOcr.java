@@ -8,11 +8,7 @@ import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.common.util.concurrent.ListenableFuture;
+import java.util.concurrent.ExecutionException;
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.text.Text;
 import com.google.mlkit.vision.text.TextRecognition;
@@ -43,18 +39,10 @@ public class CapacitorOcr extends Plugin {
         InputImage image =
                 InputImage.fromMediaImage(Uri.parse(filename), rotation);
 
-        //Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContext().getContentResolver(), Uri.parse(filename));
         if (image == null) {
             call.reject("Could not load image from path");
             return;
         } else {
-            /*int width = bitmap.getWidth();
-            int height = bitmap.getHeight();
-
-            Matrix matrix = new Matrix();
-            matrix.setRotate((float) rotation);
-            Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);*/
-
             TextDetector td = new TextDetector();
             td.detectText(call, image);
         }
